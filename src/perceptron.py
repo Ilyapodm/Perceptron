@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import time
 
 class Perceptron:
     def __init__(self):
@@ -21,6 +22,7 @@ class Perceptron:
         y_pred = np.clip(y_pred, 1e-8, 1 - 1e-8)  # исключаем y_true = 0 или 1 
         return -(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred)).mean()
         
+    
     def fit(self,
             X_train: np.ndarray,
             y_train: np.ndarray,
@@ -29,6 +31,7 @@ class Perceptron:
             epochs: int,
             lr: float,
             batch_size: int):
+        start = time.perf_counter()
         n_batches = math.ceil(len(X_train) / batch_size)  # остаток (если есть) тоже учитываем, np корректно срезает до конца
         
         for epoch in range(epochs):
@@ -68,6 +71,9 @@ class Perceptron:
             self._val_accuracy.append(val_accuracy)
             
             self._val_losses.append(val_loss)  # добавляем val loss
+        
+        end = time.perf_counter()
+        self._time = end - start
             
     def predict(self, X: np.ndarray) -> np.ndarray:
         y_pred = self.forward(X)
@@ -175,4 +181,6 @@ class Perceptron:
         fpr, tpr, auc = self.compute_ROC_AUC(y, y_pred)
         metrics["ROC"] = (fpr, tpr)
         metrics["AUC"] = auc
+        metrics["time"] = self._time
         return metrics
+    

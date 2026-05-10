@@ -1,6 +1,5 @@
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
-import numpy as np
 
 SAMPLES = 500
 SEED = 42
@@ -47,7 +46,3 @@ def load_data():
         X_test[:, col] = (X_test[:, col] - mean) / std
 
     return X_train, y_train, X_val, y_val, X_test, y_test
-
-# print(np.bincount(y_train))
-# print(np.bincount(y_val))
-# print(np.bincount(y_test))

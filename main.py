@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from data_preprocessing import load_data
-from perceptron import Perceptron
-from helpers import print_metrics
+from src.data_preprocessing import load_data
+from src.perceptron import Perceptron
+from helpers.helpers import print_metrics
 
 LR = 0.1
 EPOCHS = 100
@@ -51,6 +51,6 @@ axes[2].grid(True, alpha=0.3)
 print_metrics("Train", metrics_train, time=perceptron._time)
 print_metrics("Test",  metrics_test)
 
-plt.tight_layout()  # автоматически расставляет отступы между графиками
+plt.tight_layout() 
 plt.show()
 
