@@ -27,7 +27,7 @@ class Perceptron:
             X_val: np.ndarray,
             y_val: np.ndarray,
             epochs: int,
-            lr: int,
+            lr: float,
             batch_size: int):
         n_batches = math.ceil(len(X_train) / batch_size)  # остаток (если есть) тоже учитываем, np корректно срезает до конца
         
