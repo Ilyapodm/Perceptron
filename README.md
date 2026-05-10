@@ -54,9 +54,9 @@ $$w \leftarrow w - \eta \cdot \nabla_w \mathcal{L}$$
 ## Запуск
 
 ```bash
-uv run main.py                        # основное обучение
-uv run experiments/exp_lr.py          # эксперимент: learning rate
-uv run experiments/exp_batch_size.py  # эксперимент: batch size
+uv run main.py                                # основное обучение
+uv run experiments/exp_lr.py                  # эксперимент: learning rate
+uv run experiments/exp_batch_size.py          # эксперимент: batch size
 uv run experiments/exp_weights_init.py        # эксперимент: инициализация
 ```
 
