@@ -17,6 +17,8 @@ def load_data():
         random_state=SEED,  # seed для воспроизводимости
         n_clusters_per_class=1  # один класс на кластер -> линейно разделимые классы
     )
+    
+    y = y.reshape(len(y), 1)
 
     # первое стратифицированное разбиение
     X_train, X_test, y_train, y_test = train_test_split(
