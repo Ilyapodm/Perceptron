@@ -1,10 +1,65 @@
-# технические моменты
+# Однослойный перцептрон
 
-Разделение не на train(70) и test(30), а на train(70), val(20) и test(10)
+Реализация однослойного перцептрона с нуля на NumPy для задачи бинарной классификации.
+
+## Архитектура
+
+Перцептрон реализует логистическую регрессию:
+
+$$\hat{y} = \sigma(w^T x + b), \quad \sigma(z) = \frac{1}{1 + e^{-z}}$$
+
+**Функция потерь** — бинарная кросс-энтропия:
+
+$$\mathcal{L} = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log\hat{y}^{(i)} + (1-y^{(i)})\log(1-\hat{y}^{(i)})\right]$$
+
+**Градиенты** (выведены аналитически через chain rule):
+
+$$\frac{\partial \mathcal{L}}{\partial w} = \frac{1}{m} X^T (\hat{y} - y), \quad \frac{\partial \mathcal{L}}{\partial b} = \frac{1}{m}\sum(\hat{y} - y)$$
+
+Обновление весов через мини-батчевый SGD:
+
+$$w \leftarrow w - \eta \cdot \nabla_w \mathcal{L}$$
+
+## Данные
+
+Синтетический датасет (`make_classification`): 500 примеров, 2 признака, линейно разделимые классы (`n_clusters_per_class=1`).
+
+Разбиение с стратификацией (сохранение пропорции классов):
+
+| Выборка | Размер | Назначение |
+|---------|--------|------------|
+| Train   | 70%    | Обучение, обновление весов |
+| Val     | 20%    | Мониторинг loss во время обучения |
+| Test    | 10%    | Финальная честная оценка |
+
+Нормировка — Z-score по **train**, параметры применяются к val и test.
+
+## Структура проекта
+```
+├── src/
+│    ├── perceptron.py          ← Класс перцептрона
+│    └── data_preprocessing.py  ← Загрузка и подготовка данных
+├── helpers/
+│    └── helpers.py             ← Утилиты вывода метрик
+├── experiments/
+│    ├── exp_lr.py              ← Влияние learning rate
+│    ├── exp_batch_size.py      ← Влияние размера батча
+│    └── exp_weights_init.py    ← Влияние инициализации весов
+├── main.py                     ← Обучение + метрики + графики
+├── report.md                   ← Анализ экспериментов
+└── README.md                   ← Описание архитектуры
+```
 
 
-как считается train loss? train loss считается для каждого батча, затем в конце эпохи берется среднее, что не очень честно, из-за того, что прямо в моменте корректируются веса. Но другой вариант (в конце эпохи) требует еще одного прогона
+## Запуск
 
+```bash
+uv run main.py                        # основное обучение
+uv run experiments/exp_lr.py          # эксперимент: learning rate
+uv run experiments/exp_batch_size.py  # эксперимент: batch size
+uv run experiments/exp_weights_init.py        # эксперимент: инициализация
+```
 
-каждую эпоху:   train_loss, val_loss, val_accuracy
-в конце:        test accuracy, precision, recall, F1, ROC-AUC
+## Метрики
+
+На тестовой выборке вычисляются: Accuracy, Precision, Recall, F1, ROC-AUC.
