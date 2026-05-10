@@ -173,6 +173,6 @@ class Perceptron:
         metrics["recall"] = self.compute_recall(TP, FN)
         metrics["f1"] = self.compute_f1(metrics["precision"], metrics["recall"])
         fpr, tpr, auc = self.compute_ROC_AUC(y, y_pred)
-        metrics["ROC_curve"] = (fpr, tpr)
+        metrics["ROC"] = (fpr, tpr)
         metrics["AUC"] = auc
         return metrics
