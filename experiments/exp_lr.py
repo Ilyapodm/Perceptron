@@ -37,7 +37,7 @@ for axe, lr in enumerate(learning_rates):
     
     # metrics
     metrics_test = perceptron.evaluate(X_test, y_test)
-    print_metrics(f"lr = {lr}", metrics_test)
+    print_metrics(f"lr = {lr}", metrics_test, time=perceptron._time)
 
 axes[len(learning_rates)].set_xlabel('Epoch')
 axes[len(learning_rates)].set_ylabel('Loss')

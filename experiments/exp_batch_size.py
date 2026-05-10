@@ -19,6 +19,7 @@ batch_sizes = [1, 16, 64, 256]
 
 # graphics utils
 epoch_range = range(1, EPOCHS + 1)
+
 for axe, batch_size in enumerate(batch_sizes):
     perceptron = Perceptron()
     
@@ -37,7 +38,7 @@ for axe, batch_size in enumerate(batch_sizes):
     
     # metrics
     metrics_test = perceptron.evaluate(X_test, y_test)
-    print_metrics(f"batch size = {batch_size}", metrics_test)
+    print_metrics(f"batch size = {batch_size}", metrics_test, time=perceptron._time)
 
 axes[len(batch_sizes)].set_xlabel('Epoch')
 axes[len(batch_sizes)].set_ylabel('Loss')

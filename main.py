@@ -8,8 +8,6 @@ LR = 0.1
 EPOCHS = 100
 BATCH = 32
 
-
-
 X_train, y_train, X_val, y_val, X_test, y_test = load_data()  # загрузка данных
 
 perceptron = Perceptron()
