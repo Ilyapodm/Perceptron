@@ -3,8 +3,8 @@ import math
 import time
 
 class Perceptron:
-    def __init__(self):
-        self._w = np.random.randn(2, 1) * 0.01
+    def __init__(self, weights: np.ndarray = None):
+        self._w = weights if weights is not None else np.random.randn(2, 1) * 0.01
         self._b = 0
         self._train_losses = []
         self._val_losses = []
