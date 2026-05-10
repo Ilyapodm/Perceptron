@@ -7,6 +7,7 @@ class Perceptron:
         self._b = 0
         self._train_losses = []
         self._val_losses = []
+        self._val_accuracy = []
         
     @staticmethod
     def sigmoid(z: np.ndarray) -> np.ndarray:
@@ -20,12 +21,12 @@ class Perceptron:
         y_true = np.clip(y_pred, 1e-8, 1 - 1e-8)  # исключаем y_true = 0 или 1 
         return -(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred)).sum()/len(y_true)
     
-    # @staticmethod
-    # def compute_accuracy(y_true: np.ndarray, y_pred: np.ndarray):
-    #     # все правильные предсказания на общее количество
-    #     y_pred = y_pred >= 0.5
-    #     accuracy = (y_pred == y_true)
-    #     return 
+    @staticmethod
+    def compute_accuracy(y_true: np.ndarray, y_pred: np.ndarray):
+        # все правильные предсказания на общее количество
+        y_binary = y_pred >= 0.5
+        accuracy = y_binary == y_true
+        return accuracy.sum() / len(accuracy)
         
         
     def fit(self,
@@ -36,10 +37,14 @@ class Perceptron:
             epochs: int,
             lr: int,
             batch_size: int):
-        n_batches = math.ceil(len(X_train) / batch_size)  # остаток (если есть) тоже учитываем, np срезает до конца
+        n_batches = math.ceil(len(X_train) / batch_size)  # остаток (если есть) тоже учитываем, np корректно срезает до конца
         
         for epoch in range(epochs):
             # перемешиваем train
+            indices = np.arange(len(X_train))
+            np.random.shuffle(indices)
+            X_train = X_train[indices]
+            y_train = y_train[indices]
             
             loss_epoch = []
             for batch in range(n_batches):  # forward -> loss -> grad -> update
@@ -59,11 +64,20 @@ class Perceptron:
                 self._b -= lr * grad_b
                 
             # конец эпохи
-            self._train_losses.append(sum(loss_epoch) / n_batches)  # добавляем loss по train'у
+            self._train_losses.append(sum(loss_epoch) / n_batches)  # добавляем train loss
             
-            # val этап (не разбиваем на батчи, так как веса не обновляем)
+            # val этап (не разбиваем на батчи и не перемешиваем, т.к. веса не обновляем)
             val_pred = self.forward(X_val)  
             val_loss = self.compute_loss(y_val, val_pred)
             
-            self._train_losses.append(val_loss)  # добавляем loss val
+            val_accuracy = self.compute_accuracy(y_val, val_pred)  # добавляем val accuracy
+            self._val_accuracy.append(val_accuracy)
             
+            self._train_losses.append(val_loss)  # добавляем val loss
+        
+        # конец обучения - считаем метрики
+        
+
+    def predict(self, X: np.ndarray):
+        y_pred = self.forward(X)
+        return y_pred >= 0.5
