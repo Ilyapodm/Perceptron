@@ -2,21 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from data_preprocessing import load_data
 from perceptron import Perceptron
+from helpers import print_metrics
 
 LR = 0.1
 EPOCHS = 100
 BATCH = 32
 
-def print_metrics(name: str, metrics: dict):
-    print(f"{'─' * 35}")
-    print(f"  {name}")
-    print(f"{'─' * 35}")
-    print(f"  {'Accuracy':<12} {metrics['accuracy']:.4f}")
-    print(f"  {'Precision':<12} {metrics['precision']:.4f}")
-    print(f"  {'Recall':<12} {metrics['recall']:.4f}")
-    print(f"  {'F1':<12} {metrics['f1']:.4f}")
-    print(f"  {'AUC':<12} {metrics['AUC']:.4f}")
-    print(f"{'─' * 35}\n")
+
 
 X_train, y_train, X_val, y_val, X_test, y_test = load_data()  # загрузка данных
 
@@ -56,7 +48,7 @@ axes[2].set_title('График точек')
 axes[2].grid(True, alpha=0.3)   
 
 
-print_metrics("Train", metrics_train)
+print_metrics("Train", metrics_train, time=perceptron._time)
 print_metrics("Test",  metrics_test)
 
 plt.tight_layout()  # автоматически расставляет отступы между графиками
