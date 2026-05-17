@@ -13,6 +13,14 @@ EPOCHS = 100
 BATCH = 32
 LR = 0.1
 SEED = 42
+
+current_dir = Path(__file__)
+project_dir = current_dir.parent.parent
+
+plots_dir = project_dir / "report" / "experiment_plots"
+
+plots_dir.mkdir(parents=True, exist_ok=True)
+
 X_train, y_train, X_val, y_val, X_test, y_test = load_data()  # загрузка данных
 
 fig, axes = plt.subplots(nrows=1, ncols=4, figsize=(15, 4))
@@ -57,4 +65,6 @@ axes[len(weights)].legend()
 axes[len(weights)].grid(True, alpha=0.3)
 
 plt.tight_layout() 
+
+plt.savefig(plots_dir / "weinghts_init_exp.jpg")
 plt.show()

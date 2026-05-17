@@ -3,10 +3,15 @@ import matplotlib.pyplot as plt
 from src.data_preprocessing import load_data
 from src.perceptron import Perceptron
 from helpers.helpers import print_metrics
+from pathlib import Path
 
 LR = 0.1
 EPOCHS = 100
 BATCH = 32
+
+output_dir = Path("report/learning_plots")
+output_dir.mkdir(parents=True, exist_ok=True)
+
 
 X_train, y_train, X_val, y_val, X_test, y_test = load_data()  # загрузка данных
 
@@ -50,5 +55,7 @@ print_metrics("Train", metrics_train, time=perceptron._time)
 print_metrics("Test",  metrics_test)
 
 plt.tight_layout() 
+
+plt.savefig(output_dir / "learning_metrics.jpg")
 plt.show()
 

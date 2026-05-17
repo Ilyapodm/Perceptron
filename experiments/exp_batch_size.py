@@ -11,6 +11,13 @@ from helpers.helpers import print_metrics
 EPOCHS = 100
 LR = 0.1
 
+current_dir = Path(__file__)
+project_dir = current_dir.parent.parent
+
+plots_dir = project_dir / "report" / "experiment_plots"
+
+plots_dir.mkdir(parents=True, exist_ok=True)
+
 X_train, y_train, X_val, y_val, X_test, y_test = load_data()  # загрузка данных
 
 fig, axes = plt.subplots(nrows=1, ncols=5, figsize=(15, 4))
@@ -46,5 +53,8 @@ axes[len(batch_sizes)].set_title('Absolute compare')
 axes[len(batch_sizes)].legend()
 axes[len(batch_sizes)].grid(True, alpha=0.3)
 
+
 plt.tight_layout() 
+
+plt.savefig(plots_dir / "batch_size_exp.jpg")
 plt.show()

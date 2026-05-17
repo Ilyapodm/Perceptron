@@ -45,8 +45,15 @@ $$w \leftarrow w - \eta \cdot \nabla_w \mathcal{L}$$
 │    ├── exp_lr.py              ← Влияние learning rate
 │    ├── exp_batch_size.py      ← Влияние размера батча
 │    └── exp_weights_init.py    ← Влияние инициализации весов
+├── report/
+│    ├── learning_plots/
+│    │    └── learning_plot.jpg   
+│    ├── experiment_plots/ 
+│    │    ├── batch_size_exp.jpg            
+│    │    ├── learning_rate_exp.jpg   
+│    │    └── weinghts_init_exp.jpg
+│    └── report.md                   ← Анализ экспериментов
 ├── main.py                     ← Обучение + метрики + графики
-├── report.md                   ← Анализ экспериментов
 └── README.md                   ← Описание архитектуры
 ```
 
